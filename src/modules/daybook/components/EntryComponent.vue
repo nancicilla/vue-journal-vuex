@@ -1,20 +1,69 @@
 <template>
-    <div class="entry-container mb-3 pointer p-2" @click="$router.push({name:'entry',params:{id:10}})">
+    <div class="entry-container mb-3 pointer p-2" @click="$router.push({name:'entry',params:{id:this.entry.id}})">
      <!-- Titulo-->
       <div class="entry-title d-flex">
-        <span class="text-success fs-5 fw-bold">15</span>
-        <span class="mx-1 fs-5">Ocutubre</span>
-        <span class="mx-2 fw-l">2023,martes</span>
+        <span class="text-success fs-5 fw-bold">{{this.informacionfecha.dia}}</span>
+        <span class="mx-1 fs-5">{{this.informacionfecha.mes}}</span>
+        <span class="mx-2 fw-l">{{this.informacionfecha.anio}}</span>
      </div>
      <div class="entry-description">
-        Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.
-     </div>
+      
+      {{this.shortText}}
+         </div>
     
     </div>
 </template>
 
 <script >
+import getDayMonthYear from '@/modules/daybook/helpers/getDayMonthYear'
+ export default{
+   props:{
+      entry:{type:Object, required:true}
+   },
+   data(){
+    return{
+      informacionfecha:null,
+      
+    }
+   },
+   methods:{
+     setInformacionFecha(){
+      this.informacionfecha= getDayMonthYear(this.entry.fecha)
+     }
+   },
+   computed:{
+      shortText(){
+       
+         return (this.entry.text.length>130) ? this.entry.text.split(0,130)+'...':this.entry.text
+      }
+         
+      
+     
 
+     
+     // anio(){
+        // let fecha= new Date(this.entry.fecha)
+         //let indice=diasE.findIndex((elemento)=>elemento==this.informacion[0])
+         //return days[indice]+','+this.informacion[3]
+        // return `${fecha.getFullYear()} , ${days[fecha.getDay()]}`
+       
+      //},
+      //dia(){
+        // let fecha = new Date(this.entry.fecha)
+         //return fecha.getDate()
+      //},
+      //mes(){
+        // let indice =monthsE.findIndex((elemento)=>elemento==this.informacion[1])
+        //let fecha = new Date(this.entry.fecha)
+        // return months[fecha.getMonth()]
+      //}
+   },
+   created(){
+      this.setInformacionFecha()
+   }
+
+
+ }
 </script>
 
 <style lang="scss" scoped>
